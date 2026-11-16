@@ -10,8 +10,27 @@ function fallback(days:Day[],places:Place[],destination:string,interests:string[
  return days.map((d,i)=>{
    const rainy=d.rain>=50||d.precip>=5;
    const available=sorted.filter((p,j)=>j%days.length===i||j<days.length*2).slice(i*2,i*2+2);
-   const activities=available.length?available.map((p,j)=>({time:j===0?"Morning":"Afternoon",title:p.name,description:`${p.category.replaceAll("_"," ")} · about ${p.distanceKm} km from the destination search point`,placeId:p.id})): [{time:"Morning",title:generic[(i*2)%generic.length],description:"A flexible suggested activity based on the destination."},{time:"Afternoon",title:generic[(i*2+1)%generic.length],description:"Allow time for breaks, meals and local discoveries."}];
-   if(rainy) activities.push({time:"Weather tip",title:"Keep an indoor alternative",description:"Rain is possible; check local conditions before heading out."});
+  ? available.map((p, j) => ({
+      time: j === 0 ? "Morning" : "Afternoon",
+      title: p.name,
+      description: `${p.category.replaceAll("_", " ")} · about ${p.distanceKm} km from the destination search point`,
+      placeId: p.id
+    }))
+  : [
+      {
+        placeId: "",
+        time: "Morning",
+        title: generic[(i * 2) % generic.length],
+        description: "A flexible suggested activity based on the destination."
+      },
+      {
+        placeId: "",
+        time: "Afternoon",
+        title: generic[(i * 2 + 1) % generic.length],
+        description: "Allow time for breaks, meals and local discoveries."
+      }
+    ];
+   if(rainy) activities.push({placeId:"",time:"Weather tip",title:"Keep an indoor alternative",description:"Rain is possible; check local conditions before heading out."});
    return {day:i+1,date:d.date,weather:d.weather,high:d.high,low:d.low,rainChance:d.rain,summary:weatherAdvice(d),activities:activities.slice(0,Math.max(2,Math.min(3,Math.floor(hours/3))))};
  });
 }
