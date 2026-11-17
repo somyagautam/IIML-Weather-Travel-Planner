@@ -11,10 +11,10 @@ function fallback(days:Day[],places:Place[],destination:string,interests:string[
    const rainy=d.rain>=50||d.precip>=5;
    const available=sorted.filter((p,j)=>j%days.length===i||j<days.length*2).slice(i*2,i*2+2);
   ? available.map((p, j) => ({
+      placeId: p.id,
       time: j === 0 ? "Morning" : "Afternoon",
       title: p.name,
-      description: `${p.category.replaceAll("_", " ")} · about ${p.distanceKm} km from the destination search point`,
-      placeId: p.id
+      description: `${p.category.replaceAll("_", " ")} · about ${p.distanceKm} km from the destination search point`      
     }))
   : [
       {
