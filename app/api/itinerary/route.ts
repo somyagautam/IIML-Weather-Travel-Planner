@@ -10,6 +10,7 @@ function fallback(days:Day[],places:Place[],destination:string,interests:string[
  return days.map((d,i)=>{
    const rainy=d.rain>=50||d.precip>=5;
    const available=sorted.filter((p,j)=>j%days.length===i||j<days.length*2).slice(i*2,i*2+2);
+  const activities = available.length
   ? available.map((p, j) => ({
       placeId: p.id,
       time: j === 0 ? "Morning" : "Afternoon",
