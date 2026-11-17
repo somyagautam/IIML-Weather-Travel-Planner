@@ -3,9 +3,23 @@ export const runtime = "nodejs";
 export async function GET(req:NextRequest) {
   const lat=Number(req.nextUrl.searchParams.get("lat")), lon=Number(req.nextUrl.searchParams.get("lon"));
   if(!Number.isFinite(lat)||!Number.isFinite(lon)) return NextResponse.json({places:[]},{status:400});
-  const query=`[out:json][timeout:20];(node(around:12000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];way(around:12000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];relation(around:12000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];);out center tags 35;`;
+  const query=`[out:json][timeout:20];(node(around:12000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];way(around:12000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];relation(around:12000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];);out center tags 50;`;
   try {
-    const r=await fetch("https://overpass-api.de/api/interpreter",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded","User-Agent":"RoamcastAI/1.0 travel planner"},body:new URLSearchParams({data:query}),signal:AbortSignal.timeout(25000),cache:"no-store"});
+   const r = await fetch(
+  "https://overpass-api.de/api/interpreter",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "User-Agent": "RoamcastAI/1.0 travel planner"
+    },
+    body: new URLSearchParams({
+      data: query
+    }),
+    signal: AbortSignal.timeout(25000),
+    cache: "no-store"
+  }
+);
     if(!r.ok) throw new Error("Places service unavailable");
     const data=await r.json();
     const places=(data.elements??[]).map((e:any)=>{
