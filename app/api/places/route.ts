@@ -81,12 +81,13 @@ export async function GET(req: NextRequest) {
       .slice(0, 30);
 
     return NextResponse.json({ places });
-  } catch (err) {
-    console.error("Places API error:", err);
+  } catch (err: any) {
+  console.error("Places API error:", err);
 
-    return NextResponse.json({
-      places: [],
-      warning: "Nearby attraction search is temporarily unavailable.",
-    });
-  }
+  return NextResponse.json({
+    places: [],
+    warning: "Nearby attraction search is temporarily unavailable.",
+    error: String(err)
+  });
+}
 }
