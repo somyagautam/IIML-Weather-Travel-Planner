@@ -6,7 +6,7 @@ export async function GET(req:NextRequest) {
   const query=`[out:json][timeout:20];(node(around:12000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];way(around:12000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];relation(around:12000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];);out center tags 50;`;
   try {
    const r = await fetch(
-  "https://overpass-api.de/api/interpreter",
+     "https://overpass-api.de/api/interpreter",
   {
     method: "POST",
     headers: {
