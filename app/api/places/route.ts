@@ -13,9 +13,9 @@ export async function GET(req: NextRequest) {
   const query = `
     [out:json][timeout:20];
     (
-      node(around:12000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];
-      way(around:12000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];
-      relation(around:12000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];
+      node(around:5000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];
+      way(around:5000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];
+      relation(around:5000,${lat},${lon})["tourism"~"attraction|museum|viewpoint|gallery|zoo|theme_park"];
     );
     out center tags 50;
   `;
@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
         body: new URLSearchParams({
           data: query,
         }),
-        signal: AbortSignal.timeout(25000),
+        signal: AbortSignal.timeout(45000),
         cache: "no-store",
       }
     );
